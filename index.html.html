@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inkora ó Worn for you. Felt by everyone.</title>
+<title>Inkora ‚Äî Worn for you. Felt by everyone.</title>
 <meta name="description" content="Inkora is lingerie, loungewear, and everyday wear for the Kenyan woman who dresses for herself first. Worn for you. Felt by everyone.">
 <style>
 :root {
@@ -632,8 +632,8 @@ footer {
     <div class="carousel" id="carousel"></div>
   </div>
   <div class="carousel-nav">
-    <button id="prevBtn" aria-label="Previous">?</button>
-    <button id="nextBtn" aria-label="Next">?</button>
+    <button id="prevBtn" aria-label="Previous">‚Üê</button>
+    <button id="nextBtn" aria-label="Next">‚Üí</button>
   </div>
 </section>
 
@@ -645,7 +645,7 @@ footer {
 
 <section class="newsletter" id="newsletter">
   <h2>Join The Inkora List</h2>
-  <p>Early access to new drops, styling notes, and quiet confidence ó straight to your inbox.</p>
+  <p>Early access to new drops, styling notes, and quiet confidence ‚Äî straight to your inbox.</p>
   <form onsubmit="handleSubscribe(event)">
     <input type="email" placeholder="Your email address" required>
     <button type="submit">Subscribe</button>
@@ -701,7 +701,7 @@ footer {
     </div>
   </div>
   <div class="footer-bottom">
-    © 2025 Inkora. All rights reserved. | WhatsApp: +254 733 555703 | Nairobi, Kenya
+    ¬© 2025 Inkora. All rights reserved. | WhatsApp: +254 733 555703 | Nairobi, Kenya
   </div>
 </footer>
 
@@ -709,7 +709,7 @@ footer {
 <aside class="cart-drawer" id="cartDrawer">
   <div class="cart-header">
     <h3>Your Cart</h3>
-    <button class="close-cart" onclick="closeCart()">?</button>
+    <button class="close-cart" onclick="closeCart()">‚úï</button>
   </div>
   <div class="cart-items" id="cartItems">
     <p class="cart-empty">Your cart is empty</p>
@@ -726,19 +726,19 @@ footer {
 
 <script>
 const testimonials = [
-  { title: "I bought it for me.", text: "I bought it for myself after a breakup. No one else. Just me. The moment I put it on, I felt like I was back in my own body again ó not performing, just being.", author: "Mia Thompson" },
+  { title: "I bought it for me.", text: "I bought it for myself after a breakup. No one else. Just me. The moment I put it on, I felt like I was back in my own body again ‚Äî not performing, just being.", author: "Mia Thompson" },
   { title: "I felt like me again.", text: "I slipped it on, looked in the mirror, and actually whispered 'Damn, girl.' I've never felt more alive, more sensual, more mine.", author: "Emily" },
-  { title: "This set is literal therapy.", text: "Never thought I'd say this, but lingerie became my therapy. The way it hugs my bodyÖ I feel seen. Even if it's just by myself in the mirror.", author: "Camille T." },
+  { title: "This set is literal therapy.", text: "Never thought I'd say this, but lingerie became my therapy. The way it hugs my body‚Ä¶ I feel seen. Even if it's just by myself in the mirror.", author: "Camille T." },
   { title: "My daily act of rebellion.", text: "I used to save lingerie for 'special occasions'. Not anymore. Inkora is my everyday rebellion. Confidence under my jeans, self-worth under my hoodie.", author: "Jessie" },
-  { title: "Not just a mom... a woman.", text: "My daughter left for college this year. I needed something for me again. Inkora helped me remember that I'm not just a mom ó I'm a woman.", author: "Chloe" },
-  { title: "It's not about perfect.", text: "This isn't about having the 'perfect body.' It's about feeling like a woman again ó and now I finally do.", author: "Jennifer L." }
+  { title: "Not just a mom... a woman.", text: "My daughter left for college this year. I needed something for me again. Inkora helped me remember that I'm not just a mom ‚Äî I'm a woman.", author: "Chloe" },
+  { title: "It's not about perfect.", text: "This isn't about having the 'perfect body.' It's about feeling like a woman again ‚Äî and now I finally do.", author: "Jennifer L." }
 ];
 
 const carousel = document.getElementById('carousel');
 testimonials.forEach(t => {
   const card = document.createElement('div');
   card.className = 'testimonial-card';
-  card.innerHTML = `<div><h3>${t.title}</h3><p>"${t.text}"</p></div><div class="author">ó ${t.author}</div>`;
+  card.innerHTML = `<div><h3>${t.title}</h3><p>"${t.text}"</p></div><div class="author">‚Äî ${t.author}</div>`;
   carousel.appendChild(card);
 });
 
@@ -771,7 +771,7 @@ setInterval(() => {
   updateCarousel();
 }, 6000);
 
-/* ===== PRODUCTS ó PRICES IN KES ===== */
+/* ===== PRODUCTS ‚Äî PRICES IN KES ===== */
 const products = [
   { id: 1, name: "The Mira Set", category: "Lingerie", price: 4500, grad: "grad-1" },
   { id: 2, name: "The Solene Set", category: "Lingerie", price: 5200, grad: "grad-2" },
@@ -858,7 +858,7 @@ function renderCart() {
         <h4>${item.name}</h4>
         <p class="cart-item-price">${formatKSh(item.price)}</p>
         <div class="cart-item-actions">
-          <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+          <button class="qty-btn" onclick="changeQty(${item.id}, -1)">‚àí</button>
           <span>${item.qty}</span>
           <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
           <button class="remove-item" onclick="removeFromCart(${item.id})">Remove</button>
@@ -885,7 +885,7 @@ function checkout() {
     alert('Your cart is empty.');
     return;
   }
-  const lines = cart.map(i => `ï ${i.name} x${i.qty} ó ${formatKSh(i.price * i.qty)}`).join('\n');
+  const lines = cart.map(i => `‚Ä¢ ${i.name} x${i.qty} ‚Äî ${formatKSh(i.price * i.qty)}`).join('\n');
   const total = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
   const message =
     `Hi Inkora! I'd like to place an order:\n\n` +
