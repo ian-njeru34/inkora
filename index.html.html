@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inkora — Worn for you. Felt by everyone.</title>
+<meta name="description" content="Inkora is lingerie, loungewear, and everyday wear for the Kenyan woman who dresses for herself first. Worn for you. Felt by everyone.">
+<style>
+:root {
+  --cream: #faf6f2;
+  --blush: #e8d5d0;
+  --rose: #c9a9a6;
+  --deep: #2b2320;
+  --gold: #b8956a;
+  --text: #3a322e;
+  --white: #ffffff;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+h1, h2, h3 { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; }
+a { color: inherit; }
+
+.announcement {
+  background: var(--deep);
+  color: var(--cream);
+  text-align: center;
+  padding: 10px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 5%;
+  background: var(--cream);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.logo {
+  font-family: Georgia, serif;
+  font-size: 28px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--deep);
+}
+.nav-links {
+  display: flex;
+  gap: 35px;
+  list-style: none;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--text);
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+.cart-btn {
+  position: relative;
+  cursor: pointer;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--deep);
+  color: var(--cream);
+  border: none;
+  padding: 12px 22px;
+  transition: all 0.3s;
+}
+.cart-btn:hover { background: var(--gold); }
+.cart-count {
+  background: var(--gold);
+  color: var(--deep);
+  border-radius: 50%;
+  padding: 2px 8px;
+  font-size: 11px;
+  margin-left: 6px;
+  font-weight: bold;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 85vh;
+  align-items: center;
+  background: linear-gradient(135deg, var(--blush) 0%, var(--cream) 100%);
+}
+.hero-content { padding: 60px 8%; }
+.hero-content h1 {
+  font-size: 56px;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  color: var(--deep);
+}
+.hero-content h1 em { color: var(--gold); font-style: italic; }
+.hero-content p {
+  font-size: 17px;
+  margin-bottom: 36px;
+  max-width: 440px;
+  opacity: 0.85;
+}
+.btn {
+  display: inline-block;
+  padding: 16px 44px;
+  background: var(--deep);
+  color: var(--cream);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  transition: all 0.3s;
+  border: 1px solid var(--deep);
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn:hover { background: transparent; color: var(--deep); }
+.hero-image {
+  height: 100%;
+  background: linear-gradient(135deg, #e8d5d0 0%, #c9a9a6 50%, #b8956a 100%);
+  min-height: 500px;
+  position: relative;
+}
+.hero-image::after {
+  content: "INKORA";
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  font-family: Georgia, serif;
+  font-size: 80px;
+  letter-spacing: 8px;
+  color: rgba(255,255,255,0.15);
+}
+
+.social-proof {
+  text-align: center;
+  padding: 50px 20px;
+  background: var(--cream);
+}
+.as-seen {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-bottom: 25px;
+}
+.logos {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  font-family: Georgia, serif;
+  font-size: 20px;
+  letter-spacing: 3px;
+  opacity: 0.4;
+}
+.customer-count {
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--gold);
+}
+
+.testimonials {
+  padding: 80px 5%;
+  background: var(--deep);
+  color: var(--cream);
+}
+.testimonials h2 {
+  text-align: center;
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+.testimonials .subtitle {
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-bottom: 60px;
+}
+.carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+.carousel {
+  display: flex;
+  gap: 28px;
+  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.testimonial-card {
+  min-width: 340px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(184, 149, 106, 0.25);
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.testimonial-card h3 {
+  font-size: 22px;
+  font-style: italic;
+  color: var(--gold);
+  margin-bottom: 20px;
+  font-family: Georgia, serif;
+}
+.testimonial-card p {
+  font-size: 15px;
+  line-height: 1.8;
+  opacity: 0.9;
+  margin-bottom: 28px;
+  flex-grow: 1;
+}
+.testimonial-card .author {
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+.carousel-nav {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 50px;
+}
+.carousel-nav button {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--gold);
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.carousel-nav button:hover { background: var(--gold); color: var(--deep); }
+
+.products { padding: 100px 5%; text-align: center; }
+.products h2 { font-size: 40px; margin-bottom: 12px; }
+.products .subtitle {
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-bottom: 60px;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.product-card { text-align: center; }
+.product-image {
+  aspect-ratio: 3/4;
+  margin-bottom: 20px;
+  transition: transform 0.5s;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 20px;
+}
+.product-card:hover .product-image { transform: scale(1.02); }
+.product-card h3 { font-size: 20px; margin-bottom: 6px; }
+.product-card .category {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-bottom: 8px;
+}
+.product-card .price {
+  font-size: 15px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  font-weight: bold;
+}
+.add-to-cart {
+  padding: 12px 28px;
+  background: transparent;
+  color: var(--deep);
+  border: 1px solid var(--deep);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: inherit;
+}
+.add-to-cart:hover { background: var(--deep); color: var(--cream); }
+
+.grad-1 { background: linear-gradient(135deg, #e8d5d0 0%, #c9a9a6 100%); }
+.grad-2 { background: linear-gradient(135deg, #d4c4b8 0%, #b8956a 100%); }
+.grad-3 { background: linear-gradient(135deg, #2b2320 0%, #4a3f38 100%); }
+.grad-4 { background: linear-gradient(135deg, #f5e6e0 0%, #e8d5d0 100%); }
+.grad-5 { background: linear-gradient(135deg, #c9a9a6 0%, #8a6e6b 100%); }
+.grad-6 { background: linear-gradient(135deg, #faf6f2 0%, #e8d5d0 100%); }
+
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 200;
+}
+.cart-overlay.open { opacity: 1; pointer-events: auto; }
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 420px;
+  max-width: 90vw;
+  background: var(--cream);
+  z-index: 201;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: -10px 0 40px rgba(0,0,0,0.15);
+}
+.cart-drawer.open { transform: translateX(0); }
+.cart-header {
+  padding: 24px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cart-header h3 {
+  font-size: 22px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.close-cart {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text);
+}
+.cart-items {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+.cart-empty {
+  text-align: center;
+  opacity: 0.5;
+  padding: 60px 20px;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.cart-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.cart-item-img {
+  width: 70px;
+  height: 90px;
+  flex-shrink: 0;
+}
+.cart-item-info { flex-grow: 1; }
+.cart-item-info h4 { font-size: 15px; margin-bottom: 4px; font-family: Georgia, serif; }
+.cart-item-info .cart-item-price { font-size: 13px; color: var(--gold); margin-bottom: 8px; font-weight: bold; }
+.cart-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+.qty-btn {
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(0,0,0,0.2);
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text);
+}
+.remove-item {
+  background: none;
+  border: none;
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-left: auto;
+}
+.cart-footer {
+  padding: 24px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  background: var(--white);
+}
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.checkout-btn {
+  width: 100%;
+  padding: 18px;
+  background: var(--deep);
+  color: var(--cream);
+  border: none;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-family: inherit;
+}
+.checkout-btn:hover { background: var(--gold); }
+.checkout-note {
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 1px;
+  opacity: 0.6;
+  margin-top: 12px;
+}
+
+.newsletter {
+  padding: 80px 5%;
+  background: var(--blush);
+  text-align: center;
+}
+.newsletter h2 { font-size: 36px; margin-bottom: 12px; }
+.newsletter p { font-size: 15px; opacity: 0.75; margin-bottom: 30px; max-width: 500px; margin-left: auto; margin-right: auto; }
+.newsletter form {
+  display: flex;
+  max-width: 500px;
+  margin: 0 auto;
+  gap: 0;
+}
+.newsletter input {
+  flex-grow: 1;
+  padding: 16px 20px;
+  border: 1px solid var(--deep);
+  background: var(--cream);
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text);
+  outline: none;
+}
+.newsletter button {
+  padding: 16px 32px;
+  background: var(--deep);
+  color: var(--cream);
+  border: 1px solid var(--deep);
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.3s;
+}
+.newsletter button:hover { background: var(--gold); border-color: var(--gold); }
+
+.social-section {
+  padding: 70px 5%;
+  text-align: center;
+  background: var(--cream);
+}
+.social-section h2 { font-size: 32px; margin-bottom: 12px; }
+.social-section p {
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-bottom: 40px;
+}
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.social-icons a {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--deep);
+  border: 1px solid var(--deep);
+  transition: all 0.3s;
+}
+.social-icons a:hover {
+  background: var(--deep);
+  color: var(--cream);
+  transform: translateY(-4px);
+}
+.social-icons svg { width: 22px; height: 22px; fill: currentColor; }
+
+footer {
+  background: var(--deep);
+  color: var(--cream);
+  padding: 60px 5% 30px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto 50px;
+}
+.footer-brand h3 {
+  font-size: 26px;
+  letter-spacing: 6px;
+  margin-bottom: 16px;
+}
+.footer-brand p { font-size: 14px; opacity: 0.6; max-width: 300px; margin-bottom: 16px; }
+.footer-payment {
+  font-size: 12px;
+  letter-spacing: 1px;
+  opacity: 0.7;
+  color: var(--gold);
+}
+.footer-col h4 {
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  color: var(--gold);
+}
+.footer-col a {
+  display: block;
+  color: var(--cream);
+  text-decoration: none;
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 12px;
+  transition: opacity 0.3s;
+}
+.footer-col a:hover { opacity: 1; }
+.footer-bottom {
+  text-align: center;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 12px;
+  opacity: 0.5;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-image { min-height: 400px; order: -1; }
+  .hero-content { padding: 50px 6%; }
+  .hero-content h1 { font-size: 38px; }
+  .nav-links { display: none; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .testimonial-card { min-width: 280px; padding: 30px 24px; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .hero-content h1 { font-size: 32px; }
+  .newsletter form { flex-direction: column; gap: 12px; }
+  .newsletter input, .newsletter button { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="announcement">Free Delivery In Kenya On Orders Over KSh 5,000</div>
+
+<nav>
+  <div class="logo">Inkora</div>
+  <ul class="nav-links">
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#newsletter">Contact</a></li>
+  </ul>
+  <button class="cart-btn" onclick="openCart()">
+    Cart <span class="cart-count" id="cartCount">0</span>
+  </button>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Worn for <em>you</em>.<br>Felt by everyone.</h1>
+    <p>Inkora is lingerie, loungewear, and everyday wear for the Kenyan woman who dresses for herself first. Confidence begins underneath.</p>
+    <a href="#shop" class="btn">Shop The Collection</a>
+  </div>
+  <div class="hero-image"></div>
+</section>
+
+<section class="social-proof">
+  <p class="as-seen">Loved Across Kenya</p>
+  <div class="logos">
+    <span>NAIROBI</span>
+    <span>MOMBASA</span>
+    <span>KISUMU</span>
+    <span>NAKURU</span>
+  </div>
+  <p class="customer-count">Over 100,000+ Women Feel Different In Inkora</p>
+</section>
+
+<section class="testimonials" id="testimonials">
+  <h2>What Our Customers Say</h2>
+  <p class="subtitle">Thousands trust Inkora for their boost of confidence</p>
+  <div class="carousel-wrapper">
+    <div class="carousel" id="carousel"></div>
+  </div>
+  <div class="carousel-nav">
+    <button id="prevBtn" aria-label="Previous">?</button>
+    <button id="nextBtn" aria-label="Next">?</button>
+  </div>
+</section>
+
+<section class="products" id="shop">
+  <h2>The Inkora Edit</h2>
+  <p class="subtitle">Pieces designed to be worn for you, first</p>
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<section class="newsletter" id="newsletter">
+  <h2>Join The Inkora List</h2>
+  <p>Early access to new drops, styling notes, and quiet confidence — straight to your inbox.</p>
+  <form onsubmit="handleSubscribe(event)">
+    <input type="email" placeholder="Your email address" required>
+    <button type="submit">Subscribe</button>
+  </form>
+</section>
+
+<section class="social-section">
+  <h2>Follow Inkora</h2>
+  <p>Join the community</p>
+  <div class="social-icons">
+    <a href="https://www.instagram.com/inkoraventures" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.2.8-.4.4-.6.7-.8 1.2-.2.4-.3 1-.4 2.1-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.2.4.4.7.6 1.2.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.2-.8.4-.4.6-.7.8-1.2.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.2-.4-.4-.7-.6-1.2-.8-.4-.2-1-.3-2.1-.4-1.2-.1-1.6-.1-4.7-.1zm0 3.1a4.9 4.9 0 100 9.8 4.9 4.9 0 000-9.8zm0 8.1a3.2 3.2 0 110-6.4 3.2 3.2 0 010 6.4zm6.2-8.3a1.1 1.1 0 11-2.3 0 1.1 1.1 0 012.3 0z"/></svg>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=61593896934719" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M22 12c0-5.5-4.5-10-10-10S2 6.5 2 12c0 5 3.7 9.1 8.4 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.3v7C18.3 21.1 22 17 22 12z"/></svg>
+    </a>
+    <a href="https://www.tiktok.com/@inkoraventures" target="_blank" rel="noopener" aria-label="TikTok">
+      <svg viewBox="0 0 24 24"><path d="M19.6 6.7a5.3 5.3 0 01-3.2-3.6V2.5h-3.4v13.2a3 3 0 11-2.1-2.9V9.3a6.4 6.4 0 106.4 6.4V9.9a8.7 8.7 0 004.4 1.2V7.7a5.3 5.3 0 01-2.1-1z"/></svg>
+    </a>
+    <a href="https://wa.me/254733555703" target="_blank" rel="noopener" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.2-1.8-.9-2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7 0c-.3-.2-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.4.4-.5.1-.2.2-.3.3-.5s0-.4 0-.5c-.1-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3>INKORA</h3>
+      <p>Lingerie, loungewear, and everyday wear for the Kenyan woman who dresses for herself first. Worn for you. Felt by everyone.</p>
+      <p class="footer-payment">Pay via M-Pesa, card, or cash on delivery.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a href="#shop">New Arrivals</a>
+      <a href="#shop">Lingerie</a>
+      <a href="#shop">Loungewear</a>
+      <a href="#shop">Everyday</a>
+    </div>
+    <div class="footer-col">
+      <h4>Help</h4>
+      <a href="#">Size Guide</a>
+      <a href="#">Delivery Info</a>
+      <a href="#">Returns</a>
+      <a href="#newsletter">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4>Follow</h4>
+      <a href="https://www.instagram.com/inkoraventures" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.facebook.com/profile.php?id=61593896934719" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://www.tiktok.com/@inkoraventures" target="_blank" rel="noopener">TikTok</a>
+      <a href="https://wa.me/254733555703" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2025 Inkora. All rights reserved. | WhatsApp: +254 733 555703 | Nairobi, Kenya
+  </div>
+</footer>
+
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button class="close-cart" onclick="closeCart()">?</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <p class="cart-empty">Your cart is empty</p>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cartTotal">KSh 0</span>
+    </div>
+    <button class="checkout-btn" onclick="checkout()">Checkout via WhatsApp</button>
+    <p class="checkout-note">Pay via M-Pesa after confirming your order</p>
+  </div>
+</aside>
+
+<script>
+const testimonials = [
+  { title: "I bought it for me.", text: "I bought it for myself after a breakup. No one else. Just me. The moment I put it on, I felt like I was back in my own body again — not performing, just being.", author: "Mia Thompson" },
+  { title: "I felt like me again.", text: "I slipped it on, looked in the mirror, and actually whispered 'Damn, girl.' I've never felt more alive, more sensual, more mine.", author: "Emily" },
+  { title: "This set is literal therapy.", text: "Never thought I'd say this, but lingerie became my therapy. The way it hugs my body… I feel seen. Even if it's just by myself in the mirror.", author: "Camille T." },
+  { title: "My daily act of rebellion.", text: "I used to save lingerie for 'special occasions'. Not anymore. Inkora is my everyday rebellion. Confidence under my jeans, self-worth under my hoodie.", author: "Jessie" },
+  { title: "Not just a mom... a woman.", text: "My daughter left for college this year. I needed something for me again. Inkora helped me remember that I'm not just a mom — I'm a woman.", author: "Chloe" },
+  { title: "It's not about perfect.", text: "This isn't about having the 'perfect body.' It's about feeling like a woman again — and now I finally do.", author: "Jennifer L." }
+];
+
+const carousel = document.getElementById('carousel');
+testimonials.forEach(t => {
+  const card = document.createElement('div');
+  card.className = 'testimonial-card';
+  card.innerHTML = `<div><h3>${t.title}</h3><p>"${t.text}"</p></div><div class="author">— ${t.author}</div>`;
+  carousel.appendChild(card);
+});
+
+let index = 0;
+function cardWidth() {
+  const card = carousel.querySelector('.testimonial-card');
+  if (!card) return 0;
+  return card.offsetWidth + 28;
+}
+function maxIndex() {
+  const visible = Math.max(1, Math.floor(carousel.parentElement.offsetWidth / cardWidth()));
+  return Math.max(0, testimonials.length - visible);
+}
+function updateCarousel() {
+  if (index > maxIndex()) index = maxIndex();
+  if (index < 0) index = 0;
+  carousel.style.transform = `translateX(-${index * cardWidth()}px)`;
+}
+document.getElementById('nextBtn').addEventListener('click', () => {
+  index = index >= maxIndex() ? 0 : index + 1;
+  updateCarousel();
+});
+document.getElementById('prevBtn').addEventListener('click', () => {
+  index = index <= 0 ? maxIndex() : index - 1;
+  updateCarousel();
+});
+window.addEventListener('resize', updateCarousel);
+setInterval(() => {
+  index = index >= maxIndex() ? 0 : index + 1;
+  updateCarousel();
+}, 6000);
+
+/* ===== PRODUCTS — PRICES IN KES ===== */
+const products = [
+  { id: 1, name: "The Mira Set", category: "Lingerie", price: 4500, grad: "grad-1" },
+  { id: 2, name: "The Solene Set", category: "Lingerie", price: 5200, grad: "grad-2" },
+  { id: 3, name: "The Noir Edit", category: "Lingerie", price: 6800, grad: "grad-3" },
+  { id: 4, name: "The Everyday Slip", category: "Loungewear", price: 3200, grad: "grad-4" },
+  { id: 5, name: "The Amara Robe", category: "Loungewear", price: 7500, grad: "grad-5" },
+  { id: 6, name: "The Linen Set", category: "Everyday", price: 2800, grad: "grad-6" }
+];
+
+/* Helper: format any number as KSh with thousands separators */
+function formatKSh(amount) {
+  return 'KSh ' + amount.toLocaleString('en-KE');
+}
+
+const productGrid = document.getElementById('productGrid');
+products.forEach(p => {
+  const card = document.createElement('div');
+  card.className = 'product-card';
+  card.innerHTML = `
+    <div class="product-image ${p.grad}"></div>
+    <p class="category">${p.category}</p>
+    <h3>${p.name}</h3>
+    <p class="price">${formatKSh(p.price)}</p>
+    <button class="add-to-cart" onclick="addToCart(${p.id})">Add to Cart</button>
+  `;
+  productGrid.appendChild(card);
+});
+
+let cart = JSON.parse(localStorage.getItem('inkoraCart') || '[]');
+
+function saveCart() {
+  localStorage.setItem('inkoraCart', JSON.stringify(cart));
+}
+
+function addToCart(id) {
+  const product = products.find(p => p.id === id);
+  const existing = cart.find(item => item.id === id);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({ ...product, qty: 1 });
+  }
+  saveCart();
+  renderCart();
+  openCart();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(item => item.id !== id);
+  saveCart();
+  renderCart();
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) {
+    removeFromCart(id);
+  } else {
+    saveCart();
+    renderCart();
+  }
+}
+
+function renderCart() {
+  const cartItems = document.getElementById('cartItems');
+  const cartCount = document.getElementById('cartCount');
+  const cartTotal = document.getElementById('cartTotal');
+
+  const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
+  cartCount.textContent = totalQty;
+
+  if (cart.length === 0) {
+    cartItems.innerHTML = '<p class="cart-empty">Your cart is empty</p>';
+    cartTotal.textContent = 'KSh 0';
+    return;
+  }
+
+  cartItems.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-img ${item.grad}"></div>
+      <div class="cart-item-info">
+        <h4>${item.name}</h4>
+        <p class="cart-item-price">${formatKSh(item.price)}</p>
+        <div class="cart-item-actions">
+          <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+          <span>${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+          <button class="remove-item" onclick="removeFromCart(${item.id})">Remove</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  const total = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+  cartTotal.textContent = formatKSh(total);
+}
+
+function openCart() {
+  document.getElementById('cartDrawer').classList.add('open');
+  document.getElementById('cartOverlay').classList.add('open');
+}
+function closeCart() {
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.getElementById('cartOverlay').classList.remove('open');
+}
+
+function checkout() {
+  if (cart.length === 0) {
+    alert('Your cart is empty.');
+    return;
+  }
+  const lines = cart.map(i => `• ${i.name} x${i.qty} — ${formatKSh(i.price * i.qty)}`).join('\n');
+  const total = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+  const message =
+    `Hi Inkora! I'd like to place an order:\n\n` +
+    `${lines}\n\n` +
+    `Total: ${formatKSh(total)}\n\n` +
+    `My delivery details:\nName: \nLocation: \nPreferred payment (M-Pesa / Card / Cash on delivery): `;
+  const url = `https://wa.me/254733555703?text=${encodeURIComponent(message)}`;
+  window.open(url, '_blank');
+}
+
+function handleSubscribe(e) {
+  e.preventDefault();
+  alert('Thank you for subscribing to Inkora.');
+  e.target.reset();
+}
+
+renderCart();
+</script>
+</body>
+</html>
