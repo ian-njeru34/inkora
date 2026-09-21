@@ -11,5 +11,22 @@
 const sb=supabase.createClient(window.INKORA_SUPABASE.url,window.INKORA_SUPABASE.publishableKey);
 const msg=document.getElementById('msg'); const show=t=>{msg.textContent=t;msg.style.display='block'};
 sb.auth.getSession().then(async({data})=>{if(data.session) location.href='admin-dashboard.html'});
-document.getElementById('login').addEventListener('submit',async e=>{e.preventDefault();msg.style.display='none';const {error}=await sb.auth.signInWithPassword({email:email.value.trim(),password:password.value});if(error)return show(error.message);location.href='admin-dashboard.html'});
-</script></body></html>
+document.getElementById('login').addEventListener('submit', async e => {
+  e.preventDefault();
+  msg.style.display = 'none';
+
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+
+  const { error } = await sb.auth.signInWithPassword({
+    email: emailInput.value.trim(),
+    password: passwordInput.value
+  });
+
+  if (error) {
+    show(error.message);
+    return;
+  }
+
+  window.location.href = 'admin-dashboard.html';
+});</script></body></html>
