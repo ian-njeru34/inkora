@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Inkora Ventures — Design, print and branding solutions powered by creativity and AI.">
+  <title>Inkora Ventures | Design. Print. Brand.</title>
+  <style>
+    :root{
+      --ink:#650C0D;
+      --paper:#FFF8F0;
+      --muted:#6f7075;
+      --line:#deddd7;
+      --accent:#FEBE0F;
+      --accent-dark:#9bb900;
+      --card:#FFFFFF;
+      --radius:22px;
+      --shadow:0 20px 60px rgba(16,17,20,.10);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--paper);color:var(--ink);line-height:1.5}
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
+    button,input,select,textarea{font:inherit}
+    .container{width:min(1160px,92%);margin:auto}
+    .topbar{background:var(--ink);color:#fff;text-align:center;padding:9px;font-size:.78rem;letter-spacing:.04em}
+    header{position:sticky;top:0;z-index:50;background:rgba(247,246,242,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,0,0,.06)}
+    nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .logo{font-weight:950;font-size:1.45rem;letter-spacing:-.06em}
+    .logo span{display:inline-block;background:var(--accent);padding:1px 7px;border-radius:8px;margin-left:3px}
+    .navlinks{display:flex;align-items:center;gap:28px;font-size:.9rem;font-weight:700}
+    .navlinks a:hover{opacity:.6}
+    .navcta,.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 20px;border-radius:999px;font-weight:850;border:1px solid var(--ink);transition:.2s;cursor:pointer}
+    .navcta,.btn-dark{background:var(--ink);color:#fff}
+    .btn-accent{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+    .btn-light{background:#fff;color:var(--ink)}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.10)}
+    .menu{display:none;background:none;border:0;font-size:1.6rem;cursor:pointer}
+    .hero{padding:88px 0 70px;overflow:hidden}
+    .hero-grid{display:grid;grid-template-columns:1.04fr .96fr;gap:60px;align-items:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.76rem;font-weight:900;text-transform:uppercase;letter-spacing:.14em;margin-bottom:20px}
+    .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 6px rgba(216,255,62,.18)}
+    h1{font-size:clamp(3.4rem,7vw,6.9rem);line-height:.88;letter-spacing:-.075em;max-width:760px}
+    .hero h1 em{font-style:normal;color:#70736e}
+    .hero-copy{font-size:1.08rem;color:var(--muted);max-width:580px;margin:28px 0}
+    .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .hero-art{position:relative;min-height:500px}
+    .hero-card{position:absolute;border-radius:30px;box-shadow:var(--shadow);overflow:hidden}
+    .hero-main{inset:25px 0 0 40px;background:linear-gradient(145deg,#1b1c20 0 55%,#FEBE0F 55%);padding:38px;color:white}
+    .hero-main h2{font-size:3.5rem;line-height:.9;letter-spacing:-.06em;max-width:330px}
+    .hero-main .mini{position:absolute;bottom:32px;left:38px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase}
+    .hero-main:after{content:"INKORA";position:absolute;right:-18px;bottom:45px;font-size:6rem;font-weight:950;letter-spacing:-.08em;color:rgba(255,255,255,.08);transform:rotate(-90deg)}
+    .floating{background:#fff;color:var(--ink);padding:20px;width:185px;right:-8px;top:0;z-index:2}
+    .floating strong{display:block;font-size:2rem;line-height:1}
+    .floating small{color:var(--muted)}
+    .section{padding:95px 0}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:38px}
+    .kicker{font-size:.75rem;text-transform:uppercase;letter-spacing:.14em;font-weight:950;color:var(--muted)}
+    h2{font-size:clamp(2.2rem,4.5vw,4.2rem);line-height:.95;letter-spacing:-.065em}
+    .section-head p{max-width:470px;color:var(--muted)}
+    .service-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .service{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:27px;min-height:265px;display:flex;flex-direction:column;justify-content:space-between;transition:.25s}
+    .service:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+    .service-num{font-size:.72rem;font-weight:900;color:var(--muted)}
+    .service-icon{font-size:2rem}
+    .service h3{font-size:1.25rem;letter-spacing:-.03em}
+    .service p{color:var(--muted);font-size:.9rem;margin-top:8px}
+    .work{background:var(--ink);color:#fff}
+    .work .kicker,.work p{color:#aaa}
+    .portfolio{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+    .project{min-height:310px;border-radius:var(--radius);overflow:hidden;position:relative;background:#25262a}
+    .project:nth-child(1){grid-column:span 7}
+    .project:nth-child(2){grid-column:span 5}
+    .project:nth-child(3){grid-column:span 5}
+    .project:nth-child(4){grid-column:span 7}
+    .project-art{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:950;font-size:clamp(2rem,5vw,5rem);letter-spacing:-.08em}
+    .p1{background:linear-gradient(135deg,#f2f0e8,#9ea38f);color:#171817}
+    .p2{background:linear-gradient(135deg,#1e2227,#66717a);color:#fff}
+    .p3{background:linear-gradient(135deg,#ffdb8d,#d85b30);color:#27140c}
+    .p4{background:linear-gradient(135deg,#d9ff45,#829b0e);color:#12150a}
+    .project-info{position:absolute;left:20px;right:20px;bottom:18px;display:flex;justify-content:space-between;align-items:end}
+    .tag{display:inline-block;background:rgba(0,0,0,.72);padding:6px 10px;border-radius:999px;font-size:.7rem;font-weight:800}
+    .project-title{font-weight:900;font-size:1.15rem;margin-top:7px}
+    .solutions{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .solution{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px;display:grid;grid-template-columns:auto 1fr;gap:20px}
+    .solution .number{font-size:1.5rem;font-weight:950;color:#aaa}
+    .solution h3{font-size:1.35rem}
+    .solution p{color:var(--muted);margin:7px 0 13px}
+    .chips{display:flex;flex-wrap:wrap;gap:7px}
+    .chip{font-size:.72rem;font-weight:800;background:#f0efe9;padding:7px 10px;border-radius:999px}
+    .quote-wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:45px;align-items:start}
+    .quote-intro{position:sticky;top:110px}
+    .quote-intro p{color:var(--muted);margin:20px 0 25px}
+    form{background:#fff;border:1px solid var(--line);border-radius:28px;padding:30px;box-shadow:var(--shadow)}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}
+    .field{display:flex;flex-direction:column;gap:7px}
+    .field.full{grid-column:1/-1}
+    label{font-size:.76rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+    input,select,textarea{border:1px solid var(--line);border-radius:12px;padding:13px 14px;background:#fafaf8;outline:none}
+    input:focus,select:focus,textarea:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(216,255,62,.35)}
+    textarea{min-height:120px;resize:vertical}
+    .file{border:1.5px dashed #bdbcb5;padding:18px;border-radius:12px;color:var(--muted);font-size:.84rem}
+    .file input{border:0;padding:0;background:none}
+    .form-actions{margin-top:20px;display:flex;justify-content:flex-end}
+
+    .products-section{background:#fff}
+    .product-note{font-size:.82rem;color:var(--muted);margin-top:10px}
+    .product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .product-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:.25s}
+    .product-card:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+    .product-art{height:190px;display:flex;align-items:center;justify-content:center;font-weight:950;font-size:2.4rem;letter-spacing:-.06em;background:linear-gradient(135deg,#650C0D,#8d292a);color:#FEBE0F}
+    .product-card:nth-child(2) .product-art{background:linear-gradient(135deg,#FEBE0F,#ffd95a);color:#650C0D}
+    .product-card:nth-child(3) .product-art{background:linear-gradient(135deg,#650C0D,#3e0708);color:#fff}
+    .product-card:nth-child(4) .product-art{background:linear-gradient(135deg,#f6eee3,#FEBE0F);color:#650C0D}
+    .product-card:nth-child(5) .product-art{background:linear-gradient(135deg,#fff,#f4d8d8);color:#650C0D}
+    .product-card:nth-child(6) .product-art{background:linear-gradient(135deg,#FEBE0F,#650C0D);color:#fff}
+    .product-card:nth-child(7) .product-art{background:linear-gradient(135deg,#650C0D,#FEBE0F);color:#fff}
+    .product-card:nth-child(8) .product-art{background:linear-gradient(135deg,#f7f1e7,#650C0D);color:#650C0D}
+    .product-body{padding:20px;display:flex;flex-direction:column;gap:10px;flex:1}
+    .product-body h3{font-size:1.15rem}
+    .product-body p{font-size:.86rem;color:var(--muted);flex:1}
+    .product-meta{display:flex;align-items:end;justify-content:space-between;gap:10px;margin-top:5px}
+    .product-price{font-size:1.05rem;font-weight:950;color:var(--ink)}
+    .add-cart{padding:10px 14px;font-size:.78rem}
+    .nav-actions{display:flex;align-items:center;gap:10px;margin-left:auto}.cart-header{position:relative;width:48px;height:48px;border-radius:50%;background:var(--accent);color:var(--ink);display:grid;place-items:center;border:2px solid var(--ink);cursor:pointer;font-weight:950;box-shadow:0 6px 16px rgba(0,0,0,.12);transition:.2s}.cart-header:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.16)}.cart-header svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+    .cart-count{position:absolute;right:-3px;top:-4px;background:var(--ink);color:#fff;border-radius:50%;min-width:22px;height:22px;display:grid;place-items:center;font-size:.68rem}
+    .cart-drawer{position:fixed;inset:0;z-index:100;pointer-events:none}
+    .cart-overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);opacity:0;transition:.25s}
+    .cart-panel{position:absolute;right:0;top:0;height:100%;width:min(430px,92vw);background:#fff;transform:translateX(100%);transition:.3s;box-shadow:-20px 0 60px rgba(0,0,0,.18);display:flex;flex-direction:column}
+    .cart-drawer.open{pointer-events:auto}.cart-drawer.open .cart-overlay{opacity:1}.cart-drawer.open .cart-panel{transform:translateX(0)}
+    .cart-head{padding:22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+    .cart-head h3{font-size:1.35rem}.cart-close{border:0;background:#f2f1ec;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:1.2rem}
+    .cart-items{padding:18px;overflow:auto;display:grid;gap:12px;flex:1}
+    .cart-item{border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;grid-template-columns:1fr auto;gap:8px}
+    .cart-item strong{font-size:.95rem}.cart-item small{color:var(--muted)}
+    .qty-controls{display:flex;align-items:center;gap:8px;margin-top:8px}.qty-controls button{width:28px;height:28px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer}.remove-item{border:0;background:none;color:#a33;font-size:.75rem;cursor:pointer}
+    .cart-empty{color:var(--muted);text-align:center;padding:50px 20px}
+    .cart-foot{padding:18px;border-top:1px solid var(--line);background:#fff}.cart-total{display:flex;justify-content:space-between;font-size:1.1rem;font-weight:950;margin-bottom:13px}.cart-foot .btn{width:100%}
+    .checkout-note{font-size:.75rem;color:var(--muted);margin-top:9px;text-align:center}
+    .packages{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .package{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;position:relative}
+    .package.featured{background:var(--ink);color:#fff;border-color:var(--ink);transform:translateY(-10px)}
+    .package .badge{position:absolute;right:18px;top:18px;background:var(--accent);color:#111;padding:5px 9px;border-radius:999px;font-size:.68rem;font-weight:900}
+    .package h3{font-size:1.4rem}
+    .price{font-size:1.9rem;font-weight:950;margin:20px 0}
+    .package ul{list-style:none;color:var(--muted);display:grid;gap:9px;margin:20px 0 25px}
+    .package.featured ul{color:#bbb}
+    .package li:before{content:"✓";margin-right:8px;color:var(--accent-dark);font-weight:900}
+    .why{background:#e9f0d2}
+    .why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .why-card{padding:25px;border-top:2px solid var(--ink)}
+    .why-card h3{margin:12px 0 8px}
+    .why-card p{color:#61645c;font-size:.9rem}
+    .cta{padding:90px 0;background:var(--accent)}
+    .cta-inner{display:flex;justify-content:space-between;align-items:center;gap:30px}
+    .cta h2{max-width:700px}
+    footer{background:var(--ink);color:#fff;padding:65px 0 30px}
+    .footer-grid{display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr 1fr;gap:32px}
+    footer p,footer a{color:#999;font-size:.88rem}
+    footer h4{margin-bottom:15px}.socials{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.social-link{display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:9px 14px;color:#fff;background:rgba(255,255,255,.04);font-size:.82rem;font-weight:800;transition:.2s}.social-link:hover{transform:translateY(-2px);color:#fff}.social-link.facebook:hover{background:#1877F2;border-color:#1877F2}.social-link.instagram:hover{background:linear-gradient(135deg,#833AB4 0%,#C13584 45%,#E1306C 68%,#F56040 82%,#FCAF45 100%);border-color:transparent}.social-link.tiktok:hover{background:#111;border-color:#111}.social-icon{width:22px;height:22px;display:grid;place-items:center;flex:0 0 22px;border-radius:7px}.social-icon svg{width:20px;height:20px;display:block}.social-icon.facebook{color:#1877F2}.social-icon.instagram{color:#E1306C}.social-icon.tiktok{color:#fff}.social-strip .social-cta{display:inline-flex;align-items:center;gap:10px;border-radius:12px;padding:11px 15px;font-weight:900;text-decoration:none;color:#fff;transition:.2s}.social-strip .social-cta:hover{transform:translateY(-2px)}.social-strip .social-cta.facebook{background:#1877F2}.social-strip .social-cta.instagram{background:linear-gradient(135deg,#833AB4 0%,#C13584 45%,#E1306C 68%,#F56040 82%,#FCAF45 100%)}.social-strip .social-cta.tiktok{background:#111}
+    footer .logo{margin-bottom:16px}
+    .copyright{border-top:1px solid #292a2d;margin-top:45px;padding-top:20px;display:flex;justify-content:space-between;color:#777;font-size:.75rem}
+    .social-float{position:fixed;right:20px;bottom:20px;z-index:60;display:flex;flex-direction:column;gap:10px;align-items:flex-end}.social-float a{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;color:#fff;text-decoration:none;box-shadow:0 10px 25px rgba(0,0,0,.22);transition:transform .2s ease,box-shadow .2s ease}.social-float a:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 14px 30px rgba(0,0,0,.28)}.social-float svg{width:28px;height:28px;display:block}.social-float .whatsapp-float{background:#25D366}.social-float .facebook-float{background:#1877F2}.social-float .instagram-float{background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%)}.social-float .tiktok-float{background:#000}.social-float a::after{content:attr(data-label);position:absolute;right:68px;background:#111;color:#fff;padding:7px 10px;border-radius:7px;font-size:.72rem;font-weight:800;white-space:nowrap;opacity:0;pointer-events:none;transform:translateX(5px);transition:.18s}.social-float a:hover::after,.social-float a:focus-visible::after{opacity:1;transform:translateX(0)}.social-float a{position:relative}.social-float a:focus-visible{outline:3px solid #FEBE0F;outline-offset:3px}@media(max-width:600px){.social-float{right:14px;bottom:14px;gap:8px}.social-float a{width:50px;height:50px}.social-float svg{width:25px;height:25px}.social-float a::after{display:none}}
+    .toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,120px);background:var(--ink);color:#fff;padding:14px 20px;border-radius:999px;z-index:100;transition:.3s;box-shadow:var(--shadow)}
+    .toast.show{transform:translate(-50%,0)}
+
+    @media(max-width:1000px){.product-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:900px){
+      .navlinks{display:none;position:absolute;left:4%;right:4%;top:70px;background:#fff;padding:20px;border-radius:18px;box-shadow:var(--shadow);flex-direction:column;align-items:stretch}
+      .navlinks.open{display:flex}.menu{display:block}.navcta{display:none}
+      .hero-grid,.quote-wrap{grid-template-columns:1fr}.hero-art{min-height:390px}.quote-intro{position:static}
+      .service-grid{grid-template-columns:1fr 1fr}.packages,.why-grid{grid-template-columns:1fr 1fr}
+      .package.featured{transform:none}.footer-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:600px){
+      .topbar{font-size:.68rem}.hero{padding-top:55px}.hero-art{min-height:320px}.hero-main{inset:15px 0 0 10px;padding:25px}.hero-main h2{font-size:2.7rem}
+      .floating{width:145px;padding:15px}.floating strong{font-size:1.5rem}
+      .section{padding:70px 0}.section-head{display:block}.section-head p{margin-top:15px}
+      .service-grid,.packages,.why-grid,.solutions,.form-grid{grid-template-columns:1fr}
+      .portfolio{display:block}.project{margin-bottom:14px;min-height:270px}.project:nth-child(n){grid-column:auto}
+      .solution{grid-template-columns:1fr}.field.full{grid-column:auto}.cta-inner{display:block}.cta h2{margin-bottom:25px}
+      .footer-grid{grid-template-columns:1fr}.copyright{display:block}.copyright span{display:block;margin-top:8px}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">NAIROBI, KENYA · DESIGN · PRINT · BRANDING · AI BUSINESS SOLUTIONS</div>
+
+  <header>
+    <div class="container">
+      <nav>
+        <a class="logo" href="#home"><img src="inkora_logo_preview.png" alt="Inkora Ventures logo" style="height:42px;width:auto;object-fit:contain"></a>
+        <button class="menu" id="menuBtn" aria-label="Open menu">☰</button>
+        <div class="navlinks" id="navlinks">
+          <a href="#services">Services</a><a href="#products">Products</a>
+          <a href="#work">Portfolio</a>
+          <a href="#solutions">Solutions</a>
+          <a href="#packages">Packages</a>
+          <a href="#quote">Get a Quote</a>
+        </div>
+        <div class="nav-actions">
+          <button class="cart-header" id="cartFloat" aria-label="Open shopping cart" title="Shopping cart">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.4L21 8H7"/><circle cx="10" cy="19" r="1.5"/><circle cx="18" cy="19" r="1.5"/></svg>
+            <span class="cart-count" id="cartCount">0</span>
+          </button>
+          <a class="navcta" href="#quote">Get a Quote →</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> Design · Print · Brand · AI</div>
+          <h1>Design. Print. <em>Brand.</em> Built to be Seen.</h1>
+          <p class="hero-copy">Inkora Ventures helps businesses turn ideas into professional brands — from identity and design to print, physical branding and AI-powered business solutions.</p>
+          <div class="actions">
+            <a class="btn btn-accent" href="#quote">Get a Quote ↗</a>
+            <a class="btn btn-light" href="#work">View Our Work</a>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Inkora brand showcase">
+          <div class="hero-card hero-main" id="heroVisual">
+            <div class="eyebrow"><span class="dot"></span> Inkora Ventures</div>
+            <h2>Your brand should work as hard as you do.</h2>
+            <div class="mini">Creative systems for ambitious businesses</div>
+          </div>
+          <div class="hero-card floating">
+            <strong>01 →</strong>
+            <small>One partner from idea to finished brand.</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="kicker">What we do</div><h2>Everything your brand needs.</h2></div>
+          <p>From one-off print jobs to complete business launches, Inkora brings strategy, design, production and technology together.</p>
+        </div>
+        <div class="service-grid">
+          <article class="service"><div class="service-num">01 / 04</div><div class="service-icon">✦</div><div><h3>Graphic Design</h3><p>Logos, flyers, posters, social media, brochures, packaging and corporate profiles.</p></div></article>
+          <article class="service"><div class="service-num">02 / 04</div><div class="service-icon">▣</div><div><h3>Printing</h3><p>Business cards, banners, stickers, booklets, labels, apparel and branded merchandise.</p></div></article>
+          <article class="service"><div class="service-num">03 / 04</div><div class="service-icon">⌂</div><div><h3>Branding</h3><p>Office, shop and vehicle branding, signage and complete physical brand experiences.</p></div></article>
+          <article class="service"><div class="service-num">04 / 04</div><div class="service-icon">⌁</div><div><h3>AI Solutions</h3><p>AI-assisted content, workflows, customer communication and practical business automation.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section work" id="work">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="kicker">Selected work</div><h2>Make the brand impossible to ignore.</h2></div>
+          <p>Sample project direction. Replace these visual placeholders with Inkora's actual work as your portfolio grows.</p>
+        </div>
+        <div class="portfolio">
+          <article class="project" data-portfolio-id="0"><div class="project-art p1">BRAND</div><div class="project-info"><div><span class="tag">Corporate</span><div class="project-title">Complete identity system</div></div><span>↗</span></div></article>
+          <article class="project" data-portfolio-id="1"><div class="project-art p2">BUILD</div><div class="project-info"><div><span class="tag">Real Estate</span><div class="project-title">Campaign & site branding</div></div><span>↗</span></div></article>
+          <article class="project" data-portfolio-id="2"><div class="project-art p3">SERVE</div><div class="project-info"><div><span class="tag">Restaurant</span><div class="project-title">Packaging & promotion</div></div><span>↗</span></div></article>
+          <article class="project" data-portfolio-id="3"><div class="project-art p4">GROW</div><div class="project-info"><div><span class="tag">SME</span><div class="project-title">Launch package & signage</div></div><span>↗</span></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="solutions">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="kicker">Industry solutions</div><h2>Tell us the business. We'll map the brand.</h2></div>
+          <p>Customers shouldn't need to know what to order. Start with the outcome you want and we'll recommend the materials.</p>
+        </div>
+        <div class="solutions">
+          <article class="solution"><div class="number">01</div><div><h3>Restaurants & Hospitality</h3><p>Build a consistent customer-facing experience from storefront to takeaway.</p><div class="chips"><span class="chip">Menus</span><span class="chip">Packaging</span><span class="chip">Signage</span><span class="chip">Social</span></div></div></article>
+          <article class="solution"><div class="number">02</div><div><h3>Real Estate</h3><p>Give properties and developments a professional, visible marketing system.</p><div class="chips"><span class="chip">Flyers</span><span class="chip">Site banners</span><span class="chip">Signage</span><span class="chip">Digital</span></div></div></article>
+          <article class="solution"><div class="number">03</div><div><h3>Schools & Events</h3><p>Coordinate programmes, apparel, certificates, banners and event materials.</p><div class="chips"><span class="chip">T-shirts</span><span class="chip">Certificates</span><span class="chip">Banners</span><span class="chip">Programmes</span></div></div></article>
+          <article class="solution"><div class="number">04</div><div><h3>SMEs & Startups</h3><p>Launch professionally with the essential brand assets in one coordinated package.</p><div class="chips"><span class="chip">Logo</span><span class="chip">Cards</span><span class="chip">Flyers</span><span class="chip">Branding</span></div></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="packages">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="kicker">Start your brand</div><h2>Packages that remove the guesswork.</h2></div>
+          <p>Use these as starting structures. Pricing and inclusions can be adjusted once Inkora has real customer data.</p>
+        </div>
+        <div class="packages">
+          <article class="package"><h3>Starter</h3><div class="price" id="packagePriceStarter">From KSh —</div><ul><li>Logo design</li><li>Business card</li><li>Flyer</li><li>Digital brand files</li></ul><a class="btn btn-dark" href="#quote">Request package</a></article>
+          <article class="package featured"><span class="badge">POPULAR</span><h3>Growth</h3><div class="price" id="packagePriceGrowth">From KSh —</div><ul><li>Brand identity</li><li>Social media kit</li><li>Business cards</li><li>Flyers / promotional assets</li></ul><a class="btn btn-accent" href="#quote">Request package</a></article>
+          <article class="package"><h3>Professional</h3><div class="price" id="packagePriceProfessional">From KSh —</div><ul><li>Complete brand identity</li><li>Signage & physical branding</li><li>Print materials</li><li>Digital brand assets</li></ul><a class="btn btn-dark" href="#quote">Request package</a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section why">
+      <div class="container">
+        <div class="section-head"><div><div class="kicker">Why Inkora</div><h2>More than a print shop.</h2></div><p>One coordinated partner for the visual things your business needs to look credible and grow.</p></div>
+        <div class="why-grid">
+          <article class="why-card"><div>01</div><h3>One-stop branding</h3><p>Design → Print → Branding, without juggling multiple suppliers.</p></article>
+          <article class="why-card"><div>02</div><h3>Business-focused</h3><p>Creative work built around how your business actually needs to communicate.</p></article>
+          <article class="why-card"><div>03</div><h3>AI-powered</h3><p>Modern tools and workflows to improve creativity, speed and consistency.</p></article>
+          <article class="why-card"><div>04</div><h3>Built to scale</h3><p>Systems that can grow from one design job into a long-term brand partnership.</p></article>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section products-section" id="products">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="kicker">Shop Inkora</div><h2>Products, ready to order.</h2></div>
+          <div><p>Choose a product, add the quantity you need to your cart, then send your order to Inkora on WhatsApp. We'll confirm artwork, specifications, final pricing and delivery before production.</p><p class="product-note">Prices shown are editable starting prices. Final pricing is confirmed on WhatsApp.</p></div>
+        </div>
+        <div class="product-grid" id="productGrid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="quote">
+      <div class="container quote-wrap">
+        <div class="quote-intro">
+          <div class="kicker">Start a project</div>
+          <h2>Tell us what you need.</h2>
+          <p>Give us enough detail to understand the job. We'll use your brief to recommend the right service, materials and next step.</p>
+          <a class="btn btn-dark" href="https://wa.me/254733555703" target="_blank" rel="noopener">Chat on WhatsApp ↗</a>
+        </div>
+        <form id="quoteForm">
+          <div class="form-grid">
+            <div class="field"><label for="name">Your name</label><input id="name" required placeholder="e.g. Jane Wanjiku"></div>
+            <div class="field"><label for="phone">WhatsApp number</label><input id="phone" required placeholder="+254 7XX XXX XXX"></div>
+            <div class="field"><label for="service">What do you need?</label><select id="service" required><option value="">Select a service</option><option>Graphic Design</option><option>Printing</option><option>Branding</option><option>AI Business Solution</option><option>Complete Brand Launch</option><option>Other</option></select></div>
+            <div class="field"><label for="quantity">Quantity</label><input id="quantity" placeholder="e.g. 500"></div>
+            <div class="field"><label for="size">Size / specifications</label><input id="size" placeholder="e.g. A5, 2m × 1m"></div>
+            <div class="field"><label for="deadline">Deadline</label><input id="deadline" type="date"></div>
+            <div class="field"><label for="material">Material / finish</label><input id="material" placeholder="e.g. Matte, vinyl, 300gsm"></div>
+            <div class="field"><label for="location">Location</label><input id="location" placeholder="e.g. Nairobi"></div>
+            <div class="field full"><label for="artwork">Upload artwork</label><div class="file"><input id="artwork" type="file" accept=".pdf,.ai,.psd,.png,.jpg,.jpeg,.svg"></div></div>
+            <div class="field full"><label for="instructions">Additional instructions</label><textarea id="instructions" placeholder="Tell us about your project, colours, references, budget, delivery requirements, etc."></textarea></div>
+          </div>
+          <div class="form-actions"><button class="btn btn-accent" type="submit">Get My Quote →</button></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container cta-inner">
+        <h2>Have an idea? Let's turn it into something people remember.</h2>
+        <a class="btn btn-dark" href="#quote">Start a Project ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div><div class="logo"><img src="inkora_logo_preview.png" alt="Inkora Ventures logo" style="height:42px;width:auto;object-fit:contain"></div><p>Design, print, branding and AI-powered business solutions for ambitious businesses.</p></div>
+        <div><h4>Explore</h4><p><a href="#services">Services</a></p><p><a href="#products">Products</a></p><p><a href="#work">Portfolio</a></p><p><a href="#solutions">Solutions</a></p></div>
+        <div><h4>Start</h4><p><a href="#quote">Get a Quote</a></p><p><a href="https://wa.me/254733555703" target="_blank" rel="noopener">WhatsApp</a></p><p><a href="mailto:Inkoraventuresltd28@gmail.com">Email</a></p></div>
+        <div><h4>Contact</h4><p>Nairobi, Kenya</p><p>Mon–Sat · 8:00–18:00</p><p>+254 733 555 703</p></div>
+        <div><h4>Follow Inkora</h4><p>See our latest work, projects and updates.</p><div class="socials">
+          <a class="social-link facebook" href="https://www.facebook.com/profile.php?id=61593896934719" target="_blank" rel="noopener noreferrer" aria-label="Inkora Ventures on Facebook"><span class="social-icon facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M24 12.073C24 5.446 18.627.073 12 .073S0 5.446 0 12.073c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.413c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.926-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.063 24 12.073Z"/></svg></span>Facebook</a>
+          <a class="social-link instagram" href="https://www.instagram.com/inkoraventures" target="_blank" rel="noopener noreferrer" aria-label="Inkora Ventures on Instagram"><span class="social-icon instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.7" r="1.2" fill="currentColor"/></svg></span>Instagram</a>
+          <a class="social-link tiktok" href="https://www.tiktok.com/@inkoraventures" target="_blank" rel="noopener noreferrer" aria-label="Inkora Ventures on TikTok"><span class="social-icon tiktok"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.4 3.2c.42 2.04 1.57 3.34 3.6 3.53v3.02c-1.18.11-2.35-.27-3.6-.98v6.08c0 3.86-2.34 6.15-5.74 6.15A5.65 5.65 0 0 1 4 15.31c0-3.22 2.46-5.66 5.6-5.66.42 0 .83.05 1.2.14v3.17a3.06 3.06 0 0 0-1.18-.24c-1.35 0-2.55 1.04-2.55 2.59 0 1.4 1.06 2.5 2.57 2.5 1.62 0 2.74-1.02 2.74-3.11V3.2h3.02Z"/></svg></span>TikTok</a>
+        </div></div>
+      </div>
+      <div class="copyright"><span>© <span id="year"></span> Inkora Ventures. All rights reserved.</span><span>Design. Print. Brand. Built to be Seen.</span><a href="admin.html" style="font-weight:800;text-decoration:underline">Admin</a></div>
+    </div>
+  </footer>
+
+  <div class="social-float" aria-label="Inkora Ventures social links">
+    <a class="whatsapp-float" href="https://wa.me/254733555703" target="_blank" rel="noopener noreferrer" aria-label="Chat with Inkora on WhatsApp" data-label="WhatsApp">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.52 3.48A11.86 11.86 0 0 0 12.04 0C5.5 0 .18 5.32.18 11.86c0 2.09.55 4.13 1.6 5.92L.07 24l6.37-1.67a11.84 11.84 0 0 0 5.6 1.42h.01c6.54 0 11.86-5.32 11.86-11.86 0-3.17-1.24-6.15-3.39-8.41ZM12.05 21.76h-.01a9.85 9.85 0 0 1-5.02-1.37l-.36-.21-3.78.99 1.01-3.69-.23-.38a9.84 9.84 0 1 1 8.39 4.66Zm5.41-7.38c-.3-.15-1.78-.88-2.05-.98-.28-.1-.48-.15-.69.15-.2.3-.79.98-.97 1.18-.18.2-.36.22-.66.08-.3-.15-1.27-.47-2.42-1.5-.9-.8-1.5-1.78-1.67-2.08-.18-.3-.02-.46.13-.61.14-.14.3-.36.45-.54.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.08-.15-.69-1.66-.94-2.27-.25-.6-.5-.52-.69-.53h-.59c-.2 0-.53.08-.81.38-.28.3-1.06 1.03-1.06 2.51s1.08 2.91 1.23 3.11c.15.2 2.12 3.24 5.13 4.54.72.31 1.28.49 1.72.63.72.23 1.38.2 1.9.12.58-.09 1.78-.73 2.03-1.43.25-.7.25-1.3.18-1.43-.08-.13-.28-.2-.58-.35Z"/></svg>
+    </a>
+    <a class="facebook-float" href="https://www.facebook.com/profile.php?id=61593896934719" target="_blank" rel="noopener noreferrer" aria-label="Inkora Ventures on Facebook" data-label="Facebook">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M24 12.073C24 5.446 18.627.073 12 .073S0 5.446 0 12.073c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.413c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.926-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.063 24 12.073Z"/></svg>
+    </a>
+    <a class="instagram-float" href="https://www.instagram.com/inkoraventures" target="_blank" rel="noopener noreferrer" aria-label="Inkora Ventures on Instagram" data-label="Instagram">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2.1"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2.1"/><circle cx="17.4" cy="6.7" r="1.25" fill="currentColor"/></svg>
+    </a>
+    <a class="tiktok-float" href="https://www.tiktok.com/@inkoraventures" target="_blank" rel="noopener noreferrer" aria-label="Inkora Ventures on TikTok" data-label="TikTok">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.4 3.2c.42 2.04 1.57 3.34 3.6 3.53v3.02c-1.18.11-2.35-.27-3.6-.98v6.08c0 3.86-2.34 6.15-5.74 6.15A5.65 5.65 0 0 1 4 15.31c0-3.22 2.46-5.66 5.6-5.66.42 0 .83.05 1.2.14v3.17a3.06 3.06 0 0 0-1.18-.24c-1.35 0-2.55 1.04-2.55 2.59 0 1.4 1.06 2.5 2.57 2.5 1.62 0 2.74-1.02 2.74-3.11V3.2h3.02Z"/></svg>
+    </a>
+  </div>
+
+  <div class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <aside class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+      <div class="cart-head"><h3 id="cartTitle">Your cart</h3><button class="cart-close" id="cartClose" aria-label="Close cart">×</button></div>
+      <div class="cart-items" id="cartItems"><div class="cart-empty">Your cart is empty. Add products to get started.</div></div>
+      <div class="cart-foot">
+        <div class="cart-total"><span>Estimated total</span><span id="cartTotal">KSh 0</span></div>
+        <button class="btn btn-dark" id="checkoutWhatsApp">Order via WhatsApp →</button>
+        <div class="checkout-note">Your cart is sent to Inkora via WhatsApp. Final price, artwork and delivery details are confirmed before production.</div>
+      </div>
+    </aside>
+  </div>
+  <div class="toast" id="toast">Your project brief is ready. Connect this form to your backend/WhatsApp next.</div>
+
+  <script>
+    // Optional browser-local admin overrides. For production, replace localStorage with a secure backend/CMS.
+    const INKORA_ADMIN_KEY = 'inkoraAdminData';
+    const defaultAdminData = {
+      logoImage:'',
+      packages: {starter:'', growth:'', professional:''},
+      heroImage:'',
+      portfolioImages:['','','',''],
+      productImages:{},
+      products:{}
+    };
+    let adminData = defaultAdminData;
+    try { adminData = {...defaultAdminData, ...JSON.parse(localStorage.getItem(INKORA_ADMIN_KEY) || '{}')}; } catch(e) {}
+    function applyAdminData(){
+      const pkgMap = {starter:'packagePriceStarter', growth:'packagePriceGrowth', professional:'packagePriceProfessional'};
+      Object.entries(pkgMap).forEach(([key,id])=>{
+        const el=document.getElementById(id);
+        const value=adminData.packages && adminData.packages[key];
+        if(el && value) el.textContent = 'From KSh ' + Number(value).toLocaleString('en-KE');
+      });
+      document.querySelectorAll('.logo img').forEach(img=>{ if(adminData.logoImage) img.src=adminData.logoImage; });
+      const hero=document.getElementById('heroVisual');
+      if(hero && adminData.heroImage){ hero.style.backgroundImage=`linear-gradient(rgba(101,12,13,.16),rgba(101,12,13,.16)),url(${adminData.heroImage})`; hero.style.backgroundSize='cover'; hero.style.backgroundPosition='center'; }
+      document.querySelectorAll('[data-portfolio-id]').forEach(card=>{
+        const id=Number(card.dataset.portfolioId); const art=card.querySelector('.project-art');
+        if(art && adminData.portfolioImages && adminData.portfolioImages[id]){ art.style.backgroundImage=`url(${adminData.portfolioImages[id]})`; art.style.backgroundSize='cover'; art.style.backgroundPosition='center'; art.style.color='transparent'; }
+      });
+    }
+
+    const menuBtn = document.getElementById('menuBtn');
+    const navlinks = document.getElementById('navlinks');
+    menuBtn.addEventListener('click', () => navlinks.classList.toggle('open'));
+    document.querySelectorAll('.navlinks a').forEach(a => a.addEventListener('click', () => navlinks.classList.remove('open')));
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Edit this catalogue array whenever Inkora changes products or starting prices.
+    const baseProducts = [
+      {id:'business-cards', name:'Business Cards', price:500, unit:'per 100 cards', desc:'Professional business cards for individuals and businesses.', art:'CARDS'},
+      {id:'flyers', name:'Flyers', price:1500, unit:'starting pack', desc:'Promotional flyers for offers, events, launches and campaigns.', art:'FLYERS'},
+      {id:'posters', name:'Posters', price:800, unit:'starting price', desc:'High-impact posters for promotions, events and announcements.', art:'POSTERS'},
+      {id:'banners', name:'Banners', price:2500, unit:'starting price', desc:'Large-format banners for shops, events, campaigns and activations.', art:'BANNERS'},
+      {id:'stickers', name:'Stickers & Labels', price:1000, unit:'starting pack', desc:'Branded stickers and product labels in a range of finishes.', art:'LABELS'},
+      {id:'brochures', name:'Brochures', price:3000, unit:'starting pack', desc:'Folded brochures and marketing materials for your business.', art:'BROCHURES'},
+      {id:'tshirts', name:'Branded T-Shirts', price:1500, unit:'per shirt from', desc:'Custom branded apparel for teams, events and businesses.', art:'T-SHIRTS'},
+      {id:'mugs', name:'Branded Mugs', price:800, unit:'per mug from', desc:'Custom mugs for corporate gifts, teams and promotions.', art:'MUGS'}
+    ];
+    const products = baseProducts.map(p => ({...p, ...(adminData.products && adminData.products[p.id] ? adminData.products[p.id] : {})}));
+    const cart = [];
+    const productGrid = document.getElementById('productGrid');
+    const cartFloat = document.getElementById('cartFloat');
+    const cartDrawer = document.getElementById('cartDrawer');
+    const cartOverlay = document.getElementById('cartOverlay');
+    const cartClose = document.getElementById('cartClose');
+    const cartItems = document.getElementById('cartItems');
+    const cartCount = document.getElementById('cartCount');
+    const cartTotal = document.getElementById('cartTotal');
+    const checkoutWhatsApp = document.getElementById('checkoutWhatsApp');
+
+    const money = n => `KSh ${n.toLocaleString('en-KE')}`;
+
+    function renderProducts(){
+      productGrid.innerHTML = products.map(p => `
+        <article class="product-card">
+          <div class="product-art" style="${(p.image || (adminData.productImages && adminData.productImages[p.id])) ? `background-image:url(${p.image || adminData.productImages[p.id]});background-size:cover;background-position:center;color:transparent;` : ''}">${p.art}</div>
+          <div class="product-body">
+            <h3>${p.name}</h3>
+            <p>${p.desc}</p>
+            <div class="product-meta">
+              <div><div class="product-price">From ${money(p.price)}</div><small>${p.unit}</small></div>
+              <button class="btn btn-dark add-cart" data-id="${p.id}">Add to Cart</button>
+            </div>
+          </div>
+        </article>`).join('');
+      productGrid.querySelectorAll('.add-cart').forEach(btn => btn.addEventListener('click', () => addToCart(btn.dataset.id)));
+    }
+
+    function addToCart(id){
+      const item = cart.find(i => i.id === id);
+      if(item) item.qty += 1;
+      else cart.push({id, qty:1});
+      renderCart();
+      openCart();
+    }
+    function changeQty(id, delta){
+      const item = cart.find(i => i.id === id);
+      if(!item) return;
+      item.qty += delta;
+      if(item.qty <= 0) cart.splice(cart.indexOf(item),1);
+      renderCart();
+    }
+    function removeItem(id){
+      const idx = cart.findIndex(i => i.id === id);
+      if(idx >= 0) cart.splice(idx,1);
+      renderCart();
+    }
+    function renderCart(){
+      const count = cart.reduce((sum,i) => sum+i.qty,0);
+      const total = cart.reduce((sum,i) => { const p=products.find(p=>p.id===i.id); return sum+p.price*i.qty; },0);
+      cartCount.textContent = count;
+      cartTotal.textContent = money(total);
+      if(!cart.length){
+        cartItems.innerHTML = '<div class="cart-empty">Your cart is empty. Add products to get started.</div>';
+        return;
+      }
+      cartItems.innerHTML = cart.map(i => {
+        const p=products.find(p=>p.id===i.id);
+        return `<div class="cart-item"><div><strong>${p.name}</strong><br><small>${money(p.price)} each · ${p.unit}</small><div class="qty-controls"><button data-action="minus" data-id="${p.id}">−</button><strong>${i.qty}</strong><button data-action="plus" data-id="${p.id}">+</button><button class="remove-item" data-action="remove" data-id="${p.id}">Remove</button></div></div><strong>${money(p.price*i.qty)}</strong></div>`;
+      }).join('');
+      cartItems.querySelectorAll('[data-action]').forEach(btn => btn.addEventListener('click', () => {
+        if(btn.dataset.action==='plus') changeQty(btn.dataset.id,1);
+        if(btn.dataset.action==='minus') changeQty(btn.dataset.id,-1);
+        if(btn.dataset.action==='remove') removeItem(btn.dataset.id);
+      }));
+    }
+    function openCart(){cartDrawer.classList.add('open');cartDrawer.setAttribute('aria-hidden','false')}
+    function closeCart(){cartDrawer.classList.remove('open');cartDrawer.setAttribute('aria-hidden','true')}
+    cartFloat.addEventListener('click', openCart); cartOverlay.addEventListener('click', closeCart); cartClose.addEventListener('click', closeCart);
+
+    checkoutWhatsApp.addEventListener('click', () => {
+      if(!cart.length){ alert('Your cart is empty. Add at least one product first.'); return; }
+      const lines = cart.map(i => { const p=products.find(p=>p.id===i.id); return `• ${p.name} — Qty ${i.qty} — ${money(p.price*i.qty)}`; });
+      const total = cart.reduce((sum,i)=>sum+products.find(p=>p.id===i.id).price*i.qty,0);
+      const message = `Hello Inkora Ventures, I would like to place an order:
+
+${lines.join('\n')}
+
+Estimated total: ${money(total)}
+
+Please confirm the final price, specifications, artwork requirements and delivery details.`;
+      window.open(`https://wa.me/254733555703?text=${encodeURIComponent(message)}`, '_blank');
+    });
+
+    applyAdminData(); renderProducts(); renderCart();
+
+    const form = document.getElementById('quoteForm');
+    const toast = document.getElementById('toast');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      const file = document.getElementById('artwork').files[0];
+      const brief = `INKORA PROJECT BRIEF
+Name: ${data.name}
+WhatsApp: ${data.phone}
+Service: ${data.service}
+Quantity: ${data.quantity || 'Not specified'}
+Size: ${data.size || 'Not specified'}
+Material: ${data.material || 'Not specified'}
+Deadline: ${data.deadline || 'Not specified'}
+Location: ${data.location || 'Not specified'}
+Artwork: ${file ? file.name : 'None'}
+Instructions: ${data.instructions || 'None'}`;
+      console.log(brief);
+      toast.textContent = 'Brief captured locally. You can now connect it to WhatsApp or your backend.';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 4500);
+      form.reset();
+    });
+  </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+(async function inkoraProductionBridge(){
+  const cfg=window.INKORA_SUPABASE;
+  if(!cfg || !cfg.url || cfg.url.includes('YOUR-PROJECT') || !cfg.publishableKey || cfg.publishableKey.includes('YOUR_')) return;
+  try{
+    const sb=supabase.createClient(cfg.url,cfg.publishableKey);
+    const [{data:pkgs},{data:prods},{data:ports},{data:settings}] = await Promise.all([
+      sb.from('packages').select('*').eq('is_published',true).order('sort_order'),
+      sb.from('products').select('*').eq('is_published',true).order('sort_order'),
+      sb.from('portfolio_items').select('*').eq('is_published',true).order('sort_order'),
+      sb.from('site_settings').select('*').eq('setting_key','logo_path').maybeSingle()
+    ]);
+    const asset=p=>p?sb.storage.from('inkora-assets').getPublicUrl(p).data.publicUrl:'';
+    if(settings?.value_text){
+      document.querySelectorAll('.logo img').forEach(img=>img.src=asset(settings.value_text));
+    }
+    (pkgs||[]).forEach(p=>{
+      const id={starter:'packagePriceStarter',growth:'packagePriceGrowth',professional:'packagePriceProfessional'}[p.slug];
+      const el=id&&document.getElementById(id);
+      if(el && Number(p.price)>0) el.textContent='From KSh '+Number(p.price).toLocaleString('en-KE');
+    });
+    (ports||[]).forEach((p,i)=>{
+      const card=document.querySelector('[data-portfolio-id="'+i+'"] .project-art');
+      if(card && p.image_path){card.style.backgroundImage='url('+asset(p.image_path)+')';card.style.backgroundSize='cover';card.style.backgroundPosition='center';card.style.color='transparent';}
+    });
+    if(prods && prods.length){
+      const map=new Map(prods.map(p=>[p.slug,p]));
+      const old=window.__inkoraProducts;
+      document.querySelectorAll('#productGrid .product-card').forEach(card=>{
+        const title=card.querySelector('h3')?.textContent?.trim();
+        const p=[...map.values()].find(x=>x.name===title);
+        if(!p) return;
+        const art=card.querySelector('.product-art');
+        const price=card.querySelector('.product-price');
+        const unit=card.querySelector('.product-price')?.parentElement?.querySelector('small');
+        const desc=card.querySelector('.product-body p');
+        if(art && p.image_path){art.style.backgroundImage='url('+asset(p.image_path)+')';art.style.backgroundSize='cover';art.style.backgroundPosition='center';art.style.color='transparent';}
+        if(price) price.textContent='From KSh '+Number(p.price).toLocaleString('en-KE');
+        if(unit) unit.textContent=p.unit||'';
+        if(desc) desc.textContent=p.description||'';
+      });
+    }
+  }catch(e){ console.warn('Inkora production data unavailable; showing static site.',e); }
+})();
+</script>
+
+</body>
+</html>

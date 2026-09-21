@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inkora Ventures | Dashboard</title>
+<style>
+:root{--ink:#650C0D;--gold:#FEBE0F;--paper:#FFF8F0;--muted:#6f7075;--line:#e7ddd2}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,sans-serif}header{background:var(--ink);color:#fff;padding:16px 4%;display:flex;justify-content:space-between;align-items:center;gap:16px;position:sticky;top:0;z-index:10}header strong{letter-spacing:.05em}button,.btn{border:0;border-radius:999px;padding:11px 16px;font:inherit;font-weight:900;cursor:pointer}.gold{background:var(--gold);color:var(--ink)}.light{background:#fff;color:var(--ink)}main{width:min(1200px,92%);margin:30px auto 70px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}.tab{background:#fff;border:1px solid var(--line)}.tab.active{background:var(--ink);color:#fff}.panel{display:none}.panel.active{display:block}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px}.card h2,.card h3{margin-top:0}label{display:block;font-size:.75rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin:14px 0 6px}input,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;font:inherit}textarea{min-height:90px;resize:vertical}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.preview{height:160px;border-radius:14px;background:#f2ece4 center/cover no-repeat;display:grid;place-items:center;color:#9a8d80;font-weight:900;margin:12px 0;overflow:hidden}.preview img{width:100%;height:100%;object-fit:contain}.wide{grid-column:1/-1}.muted{color:var(--muted)}.status{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;padding:12px 16px;border-radius:999px;display:none}.status.show{display:block}@media(max-width:900px){.grid{grid-template-columns:1fr 1fr}}@media(max-width:620px){.grid{grid-template-columns:1fr}}
+</style></head><body><header><strong>INKORA VENTURES · ADMIN DASHBOARD</strong><div class="row"><a class="btn light" href="index.html">View website</a><button id="logout" class="gold">Log out</button></div></header><main>
+<h1>Website control centre</h1><p class="muted">Changes are stored in Supabase and become available to the public website across devices.</p>
+<div class="tabs"><button class="tab active" data-tab="overview">Overview</button><button class="tab" data-tab="brand">Brand</button><button class="tab" data-tab="packages">Packages</button><button class="tab" data-tab="products">Products</button><button class="tab" data-tab="portfolio">Portfolio</button></div>
+<section class="panel active" id="overview"><div class="grid"><div class="card"><h3>Products</h3><p id="countProducts">Loading…</p></div><div class="card"><h3>Packages</h3><p id="countPackages">Loading…</p></div><div class="card"><h3>Portfolio visuals</h3><p id="countPortfolio">Loading…</p></div><div class="card wide"><h2>Production architecture</h2><p>Admin Login → Dashboard → Supabase Auth → Postgres Database → Supabase Storage → Website</p></div></div></section>
+<section class="panel" id="brand"><div class="grid"><div class="card wide"><h2>Logo</h2><p class="muted">Upload the logo used by the public website.</p><div class="preview" id="logoPreview">No logo uploaded</div><input type="file" id="logoFile" accept="image/png,image/jpeg,image/webp,image/svg+xml"><div class="row"><button class="gold" id="saveLogo">Upload logo</button><button class="light" id="removeLogo">Remove logo</button></div></div></div></section>
+<section class="panel" id="packages"><div class="grid" id="packagesGrid"></div></section>
+<section class="panel" id="products"><div class="grid" id="productsGrid"></div></section>
+<section class="panel" id="portfolio"><div class="grid" id="portfolioGrid"></div></section>
+</main><div class="status" id="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script>
+const sb=supabase.createClient(window.INKORA_SUPABASE.url,window.INKORA_SUPABASE.publishableKey);
+let session=null, packages=[], products=[], portfolio=[], logoPath='';
+const status=document.getElementById('status'); const toast=t=>{status.textContent=t;status.classList.add('show');setTimeout(()=>status.classList.remove('show'),2200)};
+const assetUrl=p=>p?sb.storage.from('inkora-assets').getPublicUrl(p).data.publicUrl:'';
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+async function boot(){
+ const auth=await sb.auth.getSession(); session=auth.data.session; if(!session) return location.href='admin-login.html';
+ const {data:me,error:meErr}=await sb.from('admin_users').select('user_id').eq('user_id',session.user.id).maybeSingle(); if(meErr||!me){await sb.auth.signOut();return location.href='admin-login.html'}
+ await loadAll();
+}
+async function loadAll(){
+ let r=await sb.from('packages').select('*').order('sort_order'); packages=r.data||[];
+ r=await sb.from('products').select('*').order('sort_order'); products=r.data||[];
+ r=await sb.from('portfolio_items').select('*').order('sort_order'); portfolio=r.data||[];
+ r=await sb.from('site_settings').select('*').eq('setting_key','logo_path').maybeSingle(); logoPath=r.data?.value_text||'';
+ document.getElementById('countProducts').textContent=products.length+' products in catalogue';
+ document.getElementById('countPackages').textContent=packages.length+' packages';
+ document.getElementById('countPortfolio').textContent=portfolio.filter(x=>x.image_path).length+' portfolio visuals uploaded';
+ renderAll();
+}
+function renderAll(){
+ const lp=assetUrl(logoPath); document.getElementById('logoPreview').innerHTML=lp?'<img src="'+lp+'" alt="Logo">':'No logo uploaded';
+ document.getElementById('packagesGrid').innerHTML=packages.map(p=>`<div class="card"><h3>${esc(p.name)}</h3><label>Price (KSh)</label><input type="number" id="pkg-${p.id}" value="${p.price??0}"><label>Description</label><textarea id="pkgd-${p.id}">${esc(p.description||'')}</textarea><div class="row"><button class="gold" onclick="savePackage('${p.id}')">Save package</button></div></div>`).join('');
+ document.getElementById('productsGrid').innerHTML=products.map(p=>`<div class="card"><h3>${esc(p.name)}</h3><label>Product name</label><input id="pn-${p.id}" value="${esc(p.name)}"><label>Price (KSh)</label><input type="number" id="pp-${p.id}" value="${p.price}"><label>Unit</label><input id="pu-${p.id}" value="${esc(p.unit||'')}"><label>Description</label><textarea id="pd-${p.id}">${esc(p.description||'')}</textarea><div class="preview" id="pv-${p.id}">${p.image_path?'<img src="'+assetUrl(p.image_path)+'" alt="">':'No sample uploaded'}</div><input type="file" id="pf-${p.id}" accept="image/*"><div class="row"><button class="gold" onclick="saveProduct('${p.id}')">Save product</button></div></div>`).join('');
+ document.getElementById('portfolioGrid').innerHTML=portfolio.map(p=>`<div class="card"><h3>${esc(p.title)}</h3><label>Title</label><input id="pt-${p.id}" value="${esc(p.title)}"><label>Category</label><input id="pc-${p.id}" value="${esc(p.category||'')}"><div class="preview">${p.image_path?'<img src="'+assetUrl(p.image_path)+'" alt="">':'No visual uploaded'}</div><input type="file" id="pfp-${p.id}" accept="image/*"><button class="gold" onclick="savePortfolio('${p.id}')">Save portfolio item</button></div>`).join('');
+}
+async function upload(file,path){const {error}=await sb.storage.from('inkora-assets').upload(path,file,{upsert:true,contentType:file.type});if(error)throw error;return path}
+async function savePackage(id){const p=packages.find(x=>x.id===id);const {error}=await sb.from('packages').update({price:Number(document.getElementById('pkg-'+id).value),description:document.getElementById('pkgd-'+id).value,updated_at:new Date().toISOString(),updated_by:session.user.id}).eq('id',id);if(error)return toast(error.message);toast('Package saved');await loadAll()}
+async function saveProduct(id){const p=products.find(x=>x.id===id);let image_path=p.image_path;const f=document.getElementById('pf-'+id).files[0];if(f) image_path=await upload(f,'products/'+id+'-'+Date.now()+'-'+f.name.replace(/[^a-zA-Z0-9._-]/g,'_'));const {error}=await sb.from('products').update({name:document.getElementById('pn-'+id).value,price:Number(document.getElementById('pp-'+id).value),unit:document.getElementById('pu-'+id).value,description:document.getElementById('pd-'+id).value,image_path,updated_at:new Date().toISOString(),updated_by:session.user.id}).eq('id',id);if(error)return toast(error.message);toast('Product saved');await loadAll()}
+async function savePortfolio(id){const p=portfolio.find(x=>x.id===id);let image_path=p.image_path;const f=document.getElementById('pfp-'+id).files[0];if(f) image_path=await upload(f,'portfolio/'+id+'-'+Date.now()+'-'+f.name.replace(/[^a-zA-Z0-9._-]/g,'_'));const {error}=await sb.from('portfolio_items').update({title:document.getElementById('pt-'+id).value,category:document.getElementById('pc-'+id).value,image_path,updated_at:new Date().toISOString(),updated_by:session.user.id}).eq('id',id);if(error)return toast(error.message);toast('Portfolio saved');await loadAll()}
+document.getElementById('saveLogo').onclick=async()=>{const f=document.getElementById('logoFile').files[0];if(!f)return toast('Choose a logo first');const path=await upload(f,'brand/logo-'+Date.now()+'-'+f.name.replace(/[^a-zA-Z0-9._-]/g,'_'));const {error}=await sb.from('site_settings').upsert({setting_key:'logo_path',value_text:path,updated_at:new Date().toISOString(),updated_by:session.user.id},{onConflict:'setting_key'});if(error)return toast(error.message);toast('Logo uploaded');await loadAll()};
+document.getElementById('removeLogo').onclick=async()=>{const {error}=await sb.from('site_settings').upsert({setting_key:'logo_path',value_text:'',updated_at:new Date().toISOString(),updated_by:session.user.id},{onConflict:'setting_key'});if(error)return toast(error.message);toast('Logo removed');await loadAll()};
+document.getElementById('logout').onclick=async()=>{await sb.auth.signOut();location.href='admin-login.html'};
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.getElementById(t.dataset.tab).classList.add('active')});
+boot();
+</script></body></html>
