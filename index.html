@@ -398,7 +398,12 @@
   </div>
   <div class="toast" id="toast">Opening WhatsApp...</div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/supabase-config.js"></script>
   <script>
+    const inkoraSupabase = window.INKORA_SUPABASE
+      ? supabase.createClient(window.INKORA_SUPABASE.url, window.INKORA_SUPABASE.publishableKey)
+      : null;
     // Optional browser-local admin overrides. For production, replace localStorage with a secure backend/CMS.
     const INKORA_ADMIN_KEY = 'inkoraAdminData';
     const defaultAdminData = {
@@ -534,8 +539,13 @@ Please confirm the final price, specifications, artwork requirements and deliver
 
     const form = document.getElementById('quoteForm');
 
-    form.addEventListener('submit', e => {
+    form.addEventListener('submit', async e => {
       e.preventDefault();
+
+      const submitButton = form.querySelector('button[type="submit"]');
+      const originalButtonText = submitButton.textContent;
+      const whatsappWindow = window.open('', '_blank');
+      submitButton.disabled = true;
 
       const name = document.getElementById('name').value.trim();
       const phone = document.getElementById('phone').value.trim();
@@ -546,13 +556,47 @@ Please confirm the final price, specifications, artwork requirements and deliver
       const deadline = document.getElementById('deadline').value;
       const location = document.getElementById('location').value.trim();
       const instructions = document.getElementById('instructions').value.trim();
-
       const artworkInput = document.getElementById('artwork');
-      const artwork = artworkInput.files.length
-        ? artworkInput.files[0].name
-        : 'None';
+      const file = artworkInput.files[0] || null;
 
-      const message = `Hello Inkora Ventures 👋
+      let artworkLine = 'No artwork attached';
+
+      try {
+        if (file) {
+          if (!inkoraSupabase) {
+            throw new Error('Supabase is not configured on this site.');
+          }
+
+          const safeName = file.name
+            .replace(/[^a-zA-Z0-9._-]/g, '-')
+            .replace(/-+/g, '-')
+            .slice(-120);
+          const filePath = `quotes/${Date.now()}-${crypto.randomUUID()}-${safeName}`;
+
+          submitButton.textContent = 'Uploading artwork…';
+
+          const { error: uploadError } = await inkoraSupabase.storage
+            .from('quote-artwork')
+            .upload(filePath, file, {
+              cacheControl: '3600',
+              upsert: false,
+              contentType: file.type || 'application/octet-stream'
+            });
+
+          if (uploadError) throw uploadError;
+
+          const { data: publicData } = inkoraSupabase.storage
+            .from('quote-artwork')
+            .getPublicUrl(filePath);
+
+          if (!publicData?.publicUrl) {
+            throw new Error('Could not create the artwork link.');
+          }
+
+          artworkLine = `${file.name}\n${publicData.publicUrl}`;
+        }
+
+        const message = `Hello Inkora Ventures 👋
 
 I would like to request a quote.
 
@@ -569,7 +613,7 @@ Deadline: ${deadline || 'Not specified'}
 Location: ${location || 'Not specified'}
 
 *ARTWORK*
-${artwork}
+${artworkLine}
 
 *ADDITIONAL INSTRUCTIONS*
 ${instructions || 'None'}
@@ -578,11 +622,22 @@ Please send me the quotation and confirm the final price, artwork requirements a
 
 Thank you.`;
 
-      const whatsappUrl =
-        `https://wa.me/254733555703?text=${encodeURIComponent(message)}`;
+        const whatsappUrl =
+          `https://wa.me/254733555703?text=${encodeURIComponent(message)}`;
 
-      window.open(whatsappUrl, '_blank');
-      form.reset();
+        if (whatsappWindow) {
+          whatsappWindow.location.href = whatsappUrl;
+        } else {
+          window.location.href = whatsappUrl;
+        }
+        form.reset();
+      } catch (error) {
+        console.error('Artwork upload failed:', error);
+        alert(`We could not upload the artwork.\n\n${error.message || 'Please try again.'}\n\nYour quote was not sent yet.`);
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
+      }
     });
   </script>
 </body>
