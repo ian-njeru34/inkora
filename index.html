@@ -451,7 +451,7 @@
       {id:'tshirts', name:'Branded T-Shirts', price:1500, unit:'per shirt from', desc:'Custom branded apparel for teams, events and businesses.', art:'T-SHIRTS'},
       {id:'mugs', name:'Branded Mugs', price:800, unit:'per mug from', desc:'Custom mugs for corporate gifts, teams and promotions.', art:'MUGS'}
     ];
-    const products = baseProducts.map(p => ({...p, ...(adminData.products && adminData.products[p.id] ? adminData.products[p.id] : {})}));
+    let products = baseProducts.map(p => ({...p, ...(adminData.products && adminData.products[p.id] ? adminData.products[p.id] : {})}));
     const cart = [];
     const productGrid = document.getElementById('productGrid');
     const cartFloat = document.getElementById('cartFloat');
@@ -537,7 +537,65 @@ Please confirm the final price, specifications, artwork requirements and deliver
       window.open(`https://wa.me/254733555703?text=${encodeURIComponent(message)}`, '_blank');
     });
 
+    async function syncPublicSiteFromSupabase(){
+      if(!inkoraSupabase) return;
+      try{
+        const [pkgRes, prodRes, portRes, settingsRes] = await Promise.all([
+          inkoraSupabase.from('packages').select('*').eq('is_published', true).order('sort_order'),
+          inkoraSupabase.from('products').select('*').eq('is_published', true).order('sort_order'),
+          inkoraSupabase.from('portfolio_items').select('*').eq('is_published', true).order('sort_order'),
+          inkoraSupabase.from('site_settings').select('*').eq('setting_key', 'logo_path').maybeSingle()
+        ]);
+
+        if(pkgRes.error) console.warn('Packages sync failed:', pkgRes.error.message);
+        if(prodRes.error) console.warn('Products sync failed:', prodRes.error.message);
+        if(portRes.error) console.warn('Portfolio sync failed:', portRes.error.message);
+        if(settingsRes.error) console.warn('Logo sync failed:', settingsRes.error.message);
+
+        const assetUrl = path => path ? inkoraSupabase.storage.from('inkora-assets').getPublicUrl(path).data.publicUrl : '';
+
+        if(settingsRes.data?.value_text){
+          const logoUrl = assetUrl(settingsRes.data.value_text);
+          document.querySelectorAll('.logo img').forEach(img => img.src = logoUrl);
+        }
+
+        const packageIds = {starter:'packagePriceStarter', growth:'packagePriceGrowth', professional:'packagePriceProfessional'};
+        (pkgRes.data || []).forEach(pkg => {
+          const el = document.getElementById(packageIds[pkg.slug]);
+          if(el && Number(pkg.price) >= 0) el.textContent = 'From KSh ' + Number(pkg.price).toLocaleString('en-KE');
+        });
+
+        if(prodRes.data && prodRes.data.length){
+          products = prodRes.data.map(p => ({
+            id:p.id,
+            name:p.name,
+            price:Number(p.price || 0),
+            unit:p.unit || '',
+            desc:p.description || '',
+            image:p.image_path ? assetUrl(p.image_path) : '',
+            art:''
+          }));
+          renderProducts();
+          renderCart();
+        }
+
+        (portRes.data || []).forEach((item, index) => {
+          if(!item.image_path) return;
+          const art = document.querySelector('[data-portfolio-id="'+index+'"] .project-art');
+          if(art){
+            art.style.backgroundImage = 'url('+assetUrl(item.image_path)+')';
+            art.style.backgroundSize = 'cover';
+            art.style.backgroundPosition = 'center';
+            art.style.color = 'transparent';
+          }
+        });
+      }catch(err){
+        console.warn('Supabase public-site sync unavailable. Showing fallback content.', err);
+      }
+    }
+
     applyAdminData(); renderProducts(); renderCart();
+    syncPublicSiteFromSupabase();
 
     const form = document.getElementById('quoteForm');
 
