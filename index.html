@@ -339,7 +339,7 @@
             <div class="field full"><label for="artwork">Upload artwork</label><div class="file"><input id="artwork" type="file" accept=".pdf,.ai,.psd,.png,.jpg,.jpeg,.svg"></div></div>
             <div class="field full"><label for="instructions">Additional instructions</label><textarea id="instructions" placeholder="Tell us about your project, colours, references, budget, delivery requirements, etc."></textarea></div>
           </div>
-          <div class="form-actions"><button class="btn btn-accent" type="submit">Get My Quote →</button></div>
+          <div class="form-actions"><button class="btn btn-accent" type="submit">Send Quote via WhatsApp →</button></div>
         </form>
       </div>
     </section>
@@ -396,7 +396,7 @@
       </div>
     </aside>
   </div>
-  <div class="toast" id="toast">Your project brief is ready. Connect this form to your backend/WhatsApp next.</div>
+  <div class="toast" id="toast">Opening WhatsApp...</div>
 
   <script>
     // Optional browser-local admin overrides. For production, replace localStorage with a secure backend/CMS.
@@ -533,77 +533,57 @@ Please confirm the final price, specifications, artwork requirements and deliver
     applyAdminData(); renderProducts(); renderCart();
 
     const form = document.getElementById('quoteForm');
-    const toast = document.getElementById('toast');
+
     form.addEventListener('submit', e => {
       e.preventDefault();
-      const data = Object.fromEntries(new FormData(form).entries());
-      const file = document.getElementById('artwork').files[0];
-      const brief = `INKORA PROJECT BRIEF
-Name: ${data.name}
-WhatsApp: ${data.phone}
-Service: ${data.service}
-Quantity: ${data.quantity || 'Not specified'}
-Size: ${data.size || 'Not specified'}
-Material: ${data.material || 'Not specified'}
-Deadline: ${data.deadline || 'Not specified'}
-Location: ${data.location || 'Not specified'}
-Artwork: ${file ? file.name : 'None'}
-Instructions: ${data.instructions || 'None'}`;
-      console.log(brief);
-      toast.textContent = 'Brief captured locally. You can now connect it to WhatsApp or your backend.';
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 4500);
+
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const service = document.getElementById('service').value;
+      const quantity = document.getElementById('quantity').value.trim();
+      const size = document.getElementById('size').value.trim();
+      const material = document.getElementById('material').value.trim();
+      const deadline = document.getElementById('deadline').value;
+      const location = document.getElementById('location').value.trim();
+      const instructions = document.getElementById('instructions').value.trim();
+
+      const artworkInput = document.getElementById('artwork');
+      const artwork = artworkInput.files.length
+        ? artworkInput.files[0].name
+        : 'None';
+
+      const message = `Hello Inkora Ventures 👋
+
+I would like to request a quote.
+
+*CUSTOMER DETAILS*
+Name: ${name}
+WhatsApp: ${phone}
+
+*PROJECT DETAILS*
+Service: ${service}
+Quantity: ${quantity || 'Not specified'}
+Size / Specifications: ${size || 'Not specified'}
+Material / Finish: ${material || 'Not specified'}
+Deadline: ${deadline || 'Not specified'}
+Location: ${location || 'Not specified'}
+
+*ARTWORK*
+${artwork}
+
+*ADDITIONAL INSTRUCTIONS*
+${instructions || 'None'}
+
+Please send me the quotation and confirm the final price, artwork requirements and delivery details.
+
+Thank you.`;
+
+      const whatsappUrl =
+        `https://wa.me/254733555703?text=${encodeURIComponent(message)}`;
+
+      window.open(whatsappUrl, '_blank');
       form.reset();
     });
   </script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
-<script>
-(async function inkoraProductionBridge(){
-  const cfg=window.INKORA_SUPABASE;
-  if(!cfg || !cfg.url || cfg.url.includes('YOUR-PROJECT') || !cfg.publishableKey || cfg.publishableKey.includes('YOUR_')) return;
-  try{
-    const sb=supabase.createClient(cfg.url,cfg.publishableKey);
-    const [{data:pkgs},{data:prods},{data:ports},{data:settings}] = await Promise.all([
-      sb.from('packages').select('*').eq('is_published',true).order('sort_order'),
-      sb.from('products').select('*').eq('is_published',true).order('sort_order'),
-      sb.from('portfolio_items').select('*').eq('is_published',true).order('sort_order'),
-      sb.from('site_settings').select('*').eq('setting_key','logo_path').maybeSingle()
-    ]);
-    const asset=p=>p?sb.storage.from('inkora-assets').getPublicUrl(p).data.publicUrl:'';
-    if(settings?.value_text){
-      document.querySelectorAll('.logo img').forEach(img=>img.src=asset(settings.value_text));
-    }
-    (pkgs||[]).forEach(p=>{
-      const id={starter:'packagePriceStarter',growth:'packagePriceGrowth',professional:'packagePriceProfessional'}[p.slug];
-      const el=id&&document.getElementById(id);
-      if(el && Number(p.price)>0) el.textContent='From KSh '+Number(p.price).toLocaleString('en-KE');
-    });
-    (ports||[]).forEach((p,i)=>{
-      const card=document.querySelector('[data-portfolio-id="'+i+'"] .project-art');
-      if(card && p.image_path){card.style.backgroundImage='url('+asset(p.image_path)+')';card.style.backgroundSize='cover';card.style.backgroundPosition='center';card.style.color='transparent';}
-    });
-    if(prods && prods.length){
-      const map=new Map(prods.map(p=>[p.slug,p]));
-      const old=window.__inkoraProducts;
-      document.querySelectorAll('#productGrid .product-card').forEach(card=>{
-        const title=card.querySelector('h3')?.textContent?.trim();
-        const p=[...map.values()].find(x=>x.name===title);
-        if(!p) return;
-        const art=card.querySelector('.product-art');
-        const price=card.querySelector('.product-price');
-        const unit=card.querySelector('.product-price')?.parentElement?.querySelector('small');
-        const desc=card.querySelector('.product-body p');
-        if(art && p.image_path){art.style.backgroundImage='url('+asset(p.image_path)+')';art.style.backgroundSize='cover';art.style.backgroundPosition='center';art.style.color='transparent';}
-        if(price) price.textContent='From KSh '+Number(p.price).toLocaleString('en-KE');
-        if(unit) unit.textContent=p.unit||'';
-        if(desc) desc.textContent=p.description||'';
-      });
-    }
-  }catch(e){ console.warn('Inkora production data unavailable; showing static site.',e); }
-})();
-</script>
-
 </body>
 </html>
